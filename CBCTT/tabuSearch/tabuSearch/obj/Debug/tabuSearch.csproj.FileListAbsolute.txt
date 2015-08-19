@@ -1,0 +1,6 @@
+c:\users\saber\documents\visual studio 2012\Projects\CBCTT\tabuSearch\tabuSearch\bin\Debug\tabuSearch.exe.config
+c:\users\saber\documents\visual studio 2012\Projects\CBCTT\tabuSearch\tabuSearch\bin\Debug\tabuSearch.exe
+c:\users\saber\documents\visual studio 2012\Projects\CBCTT\tabuSearch\tabuSearch\bin\Debug\tabuSearch.pdb
+c:\users\saber\documents\visual studio 2012\Projects\CBCTT\tabuSearch\tabuSearch\obj\Debug\tabuSearch.exe
+c:\users\saber\documents\visual studio 2012\Projects\CBCTT\tabuSearch\tabuSearch\obj\Debug\tabuSearch.pdb
+c:\users\saber\documents\visual studio 2012\Projects\CBCTT\tabuSearch\tabuSearch\obj\Debug\tabuSearch.csprojResolveAssemblyReference.cache
