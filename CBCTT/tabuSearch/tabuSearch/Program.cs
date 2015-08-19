@@ -71,6 +71,8 @@ namespace tabuSearch
         public int EtaMax;
 
 
+        int pomov;
+        int impomov;
         List<simpleMove> simpleSwapTabuList;
         List<int[]> simpleSwapList;
         List<kempeSwap> kempeSwapTabuList;
@@ -82,7 +84,8 @@ namespace tabuSearch
         /// <param name="output">نام فایل خروجی</param>
         public tabuSolver(string input, string output)
         {
-
+            pomov = 0;
+            impomov = 0;
             try
             {
                 IReader = new StreamReader(input);
@@ -95,7 +98,8 @@ namespace tabuSearch
                 Console.Read();
                 return;
             }
-
+            DateTime startRuntime = new DateTime();
+            startRuntime = DateTime.Now;
             readInput(out prblm);//Algorithm 3 line 1
             Xi = 0;
             theta = theta0 = 10;
@@ -114,7 +118,8 @@ namespace tabuSearch
                 Console.WriteLine("ci:"+ci+"    "+pos[0] + "," + pos[1]);
             } while (X0.LC.Count > 0 && pos[0] != -1);//end of part1: initialization
 
-
+            Xstar = new solution();
+            solutionCopier.copy(X0, out Xstar);
             solutionCopier.copy(TS(X0, theta), out Xstar);
 
             int loopCount1 = 100;
@@ -145,9 +150,14 @@ namespace tabuSearch
                     Xi++;
                     Eta = Math.Max(EtaMin + landa * Xi, EtaMax);
                 }
+                Console.WriteLine(validator.getCost(prblm, Xstar));
             } while (loopCount2-->0);
 
             OWriter.Close();
+            DateTime endRuntime = new DateTime();
+            endRuntime = DateTime.Now;
+            Console.WriteLine("{0} possible moves \n{1} impossible move \n",pomov,impomov);
+            Console.WriteLine("run time = {0}",endRuntime-startRuntime);
             Console.WriteLine("press any to exit...");
             Console.Read();
 
@@ -277,16 +287,19 @@ namespace tabuSearch
                         simpleMove m2 = new simpleMove();
                     
                         m1.courseId = course1;
-                        m1.r = r1;
-                        m1.t = t1;
+                        m1.r = r2;
+                        m1.t = t2;
                         
-                        m2.courseId = course1;
-                        m2.r = r2;
-                        m2.t = t2;
+                        m2.courseId = course2;
+                        m2.r = r1;
+                        m2.t = t1;
                     
-                    if(isAvl(X,m1) && isAvl(X,m2))
+                    if( isAvl(X,m1) && isAvl(X,m2) )
                     {
+                        if (m1.courseId != null || m2.courseId != null)
                         simpleSwapList.Add(simswap);
+                       // if (m1.courseId != null && m2.courseId != null)
+                            //Console.WriteLine("{0} , {1}",m1.courseId, m2.courseId);
                     }
                     
                    
@@ -304,7 +317,7 @@ namespace tabuSearch
                 costXstarPrime = validator.getCost(prblm, XstarPrime);
                 if (costXstarPrime < costXbest)
                 {
-                    Console.Write("{0} < {1}\n",costXstarPrime,costXbest);
+                   // Console.Write("{0} < {1} < {2}\n",validator.getCost( prblm,Xstar), costXstarPrime,costXbest);
                     solutionCopier.copy( XstarPrime,out Xbest );
                     solutionCopier.copy( XstarPrime,out X);
                 }
@@ -323,13 +336,18 @@ namespace tabuSearch
             //int index = r.Next(simpleSwapList.Count);
             do
             {
-                int index=r.Next(simpleSwapList.Count);
-                swap(X,simpleSwapList[index]);
-                
+                if (simpleSwapList.Count > 0)
+                {
+                    int index = r.Next(simpleSwapList.Count);
+                    swap(tempX, simpleSwapList[index]);
+                }
 
             } while (theta-->0);
-
-            return tempX;
+            double cost1=validator.getCost(prblm,tempX);
+            double cost2=validator.getCost(prblm,Xstar);
+            if(cost1<cost2)
+                return tempX;
+            return Xstar;
 
         }
 
@@ -380,10 +398,63 @@ namespace tabuSearch
             
             
         }
+
+
+        public bool isMoveAv(solution X,string cId,int period) {
+
+            List<string> relatedCourse = new List<string>();
+            foreach (var item in prblm.Curricula)
+            {
+                if (item.Courses.Contains(cId))
+                {
+                    foreach (var course in item.Courses)
+                    {
+                     if(course!="" && !relatedCourse.Contains(course) )   relatedCourse.Add(course);
+                    }
+                }
+            }
+
+
+            for (int i = 0; i < X.timeTable[period].Length; i++)
+            {
+                foreach (var item in X.timeTable[period])
+                {
+                    if (relatedCourse.Contains(item.CourseID))//this move is not possible!!!
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
         public void swap(solution X,int[] swap)
         {
+
+
+
             course c1 = X.timeTable[swap[0]][swap[1]];
             course c2 = X.timeTable[swap[2]][swap[3]];
+
+            if (c1.CourseID != null)//mojaz bodan enteqal ra barasi kon
+            {
+                if (!isMoveAv(X, c1.CourseID, swap[2]))
+                {
+                   // Console.WriteLine("{0} can't move to {1}",c1.CourseID,swap[2]);
+                    impomov++;
+                    return;
+                }
+            }
+            if (c2.CourseID != null)//mojaz bodan enteqal ra barasi kon
+            {
+                if (!isMoveAv(X, c2.CourseID, swap[0]))
+                {
+                   // Console.WriteLine("{0} can't move to {1}", c2.CourseID, swap[0]);
+                    impomov++;
+                    return;
+                }
+            }
+            pomov++;
 
             X.timeTable[swap[0]][swap[1]]=c2;
             X.timeTable[swap[2]][swap[3]]=c1;
@@ -915,6 +986,9 @@ namespace tabuSearch
             alpha3 = 5;
             alpha4 = 2;
             P = p;
+            if (x.apd == null) {
+                X = x;
+            }
             X = x;
             return f();
         }
