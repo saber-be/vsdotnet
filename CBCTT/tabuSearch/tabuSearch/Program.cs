@@ -121,7 +121,7 @@ namespace tabuSearch
             Xstar = new solution();
             solutionCopier.copy(X0, out Xstar);
             solutionCopier.copy(TS(X0, theta), out Xstar);
-
+            
             int loopCount1 = 100;
             int loopCount2 = 100;
             do
@@ -152,7 +152,7 @@ namespace tabuSearch
                 }
                 Console.WriteLine(validator.getCost(prblm, Xstar));
             } while (loopCount2-->0);
-
+            
             OWriter.Close();
             DateTime endRuntime = new DateTime();
             endRuntime = DateTime.Now;
@@ -459,11 +459,13 @@ namespace tabuSearch
             X.timeTable[swap[0]][swap[1]]=c2;
             X.timeTable[swap[2]][swap[3]]=c1;
 
-            X.setNr(c2.CourseID);
-            X.setNr(c1.CourseID);
-
-
-
+            int c1Index,c2Index;
+            c1Index = c2Index = 0;
+            for (int i = 0; i < prblm.courses.Length; i++)
+                {
+                    if (prblm.courses[i].CourseID == c1.CourseID) c1Index = i;
+                    if (prblm.courses[i].CourseID == c2.CourseID) c2Index = i;
+                }
 
             if (c1.CourseID != null)
             {
@@ -471,6 +473,11 @@ namespace tabuSearch
                 m1.courseId = c1.CourseID;
                 m1.t = swap[2];
                 m1.r = swap[3];
+
+
+                X.setNr(c1.CourseID);
+    
+                X.setNd(c1Index);
                 simpleSwapTabuList.Add(m1);
             }
             if(c2.CourseID!=null){
@@ -478,6 +485,8 @@ namespace tabuSearch
             m2.courseId = c2.CourseID;
             m2.t = swap[0];
             m2.r = swap[1];
+            X.setNr(c2.CourseID);
+                X.setNd(c2Index);
             simpleSwapTabuList.Add(m2);
             }
 
@@ -575,6 +584,25 @@ namespace tabuSearch
 
         public problemInstance p;
 
+        /// <summary>
+        /// whether curriculum CRk appears at period ti for
+        /// a candidate solution X
+        /// </summary>
+        /// <param name="k">Kth curriculum</param>
+        /// <param name="i">period</param>
+        /// <returns>1 : when any course in curiculum CRk is scheduled at period Ti and return 0 otherwise</returns>
+        public int app( int k, int i)
+        {
+
+            foreach (var item in p.Curricula[k].Courses)
+            {
+                foreach (var c in timeTable[i])
+                {
+                    if (item == c.CourseID) return 1;
+                }
+            }
+            return 0;
+        }
 
         public List<int> getUavPeriods(int cindex)
         {
@@ -596,11 +624,38 @@ namespace tabuSearch
             this.timeTable[Tj][Rk] = LC[Ci];
             setNr(Ci);
             setApd(Ci,Tj);
-            
+            setNd(Ci);
             this.nl[Ci]--;
             if (nl[Ci]==0)
                 LC.Remove(Ci);
             //this.
+        }
+        public void setNd(int Ci)
+        {
+            string cId = p.courses[Ci].CourseID;
+            int d1, d2;
+            d1 = d2 = 0;
+            for (int i = 0; i < this.timeTable.Length; i++)
+            {
+                for (int r = 0; r < this.timeTable[0].Length; r++)
+                {
+                    if (this.timeTable[i][r].CourseID == cId)
+                    {
+                        if (d1 == 0)
+                        {
+                            d1 = i / p.Periods_per_day;
+                        }
+                        else
+                        {
+                            d2 = i / p.Periods_per_day;
+                            nd[Ci] = d2 - d1 + 1;
+                            return;
+                        }
+                    }
+                }
+            }
+
+
         }
 
         public void setApd(int Ci,int Tj)
@@ -1024,10 +1079,19 @@ namespace tabuSearch
             if (X.nd[Ci] < P.courses[Ci].MinWorkingDays) cost = alpha3 * (P.courses[Ci].MinWorkingDays - X.nd[Ci]);
             return cost;
         }
-        public static  double f4(int Pi, int Rj)
+        public static double f4(int Pi, int Rj)
         {
             double cost = 0;
-            return cost;
+            for (int q = 0; q < P.Curricula.Length; q++)
+            {
+                int c_cr = 0;
+                if (P.Curricula[q].Courses.Contains(X.timeTable[Pi][Rj].CourseID)) c_cr = 1;
+                cost += c_cr * iso(X, q, Pi);
+
+            }
+
+            return cost * alpha4;
+
         }
         public static double f()
         {
@@ -1051,6 +1115,16 @@ namespace tabuSearch
             cost = sigma1 + sigma2 + sigma3 + sigma4;
 
             return cost;
+        }
+
+        public static int iso(solution X,int q, int i)
+        {
+
+            if ((i % P.Periods_per_day == 1 && X.app(q, i - 1) == 0) || (i % P.Periods_per_day == 0 && X.app(q, i + 1) == 0))
+            {
+                return 1;
+            }
+            return 0;
         }
     }
 
