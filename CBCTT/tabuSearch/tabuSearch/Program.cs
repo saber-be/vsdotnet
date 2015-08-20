@@ -66,7 +66,7 @@ namespace tabuSearch
         /// η in article
         /// </summary>
         public int Eta;
-        public int landa;
+        public double landa;
         public int EtaMin;
         public int EtaMax;
 
@@ -108,6 +108,7 @@ namespace tabuSearch
             theta = theta0 = 10;
             Eta = EtaMin = 4;
             EtaMax = 15;
+            landa = 0.3;
             simpleSwapTabuList = new List<simpleMove>();
             kempeSwapTabuList = new List<kempeSwap>();
             X0.initSol(prblm);
@@ -125,15 +126,18 @@ namespace tabuSearch
             solutionCopier.copy(X0, out Xstar);
             solutionCopier.copy(TS(X0, theta), out Xstar);
             
-            int loopCount1 = 100;
-            int loopCount2 = 100;
-            
+            int loopCount1 = 10;
+            int loopCount2 = 20;
+            int tbcouner=0;
             do
             {
-                loopCount1 = 100;
+                loopCount1 = 10;
                 solutionCopier.copy(perturb(Xstar,Eta),out Xprime);
                 solutionCopier.copy( TS(Xprime, theta),out  XstarPrime);
-                if(validator.getCost(prblm,XstarPrime)<validator.getCost(prblm,Xstar)+2){
+                double XstarPrime_Cost=validator.getCost(prblm,XstarPrime);
+                double Xstar_Cost=validator.getCost(prblm, Xstar);
+                if (XstarPrime_Cost < Xstar_Cost + 2)
+                {
                     do
                     {
                         theta = (int )(1.6 * theta0);
@@ -152,10 +156,19 @@ namespace tabuSearch
                 {
                     theta = theta0;
                     Xi++;
-                    Eta = Math.Max(EtaMin + landa * Xi, EtaMax);
+                    Eta = Math.Max((int)(EtaMin + landa * Xi), EtaMax);
                 }
-                Console.WriteLine(validator.getCost(prblm, Xstar));
-            } while (loopCount2-->0);
+                Console.WriteLine("tabu list count = {0}" ,simpleSwapTabuList.Count);
+                Console.WriteLine("cost = {0}",validator.getCost(prblm, Xstar));
+                if (tbcouner != 0 && tbcouner == simpleSwapTabuList.Count)
+                {
+                    loopCount2 = 0;
+                }
+                else
+                {
+                    tbcouner = simpleSwapTabuList.Count;
+                }
+            } while (loopCount2-->0 );
             
             OWriter.Close();
             DateTime endRuntime = new DateTime();
@@ -268,6 +281,7 @@ namespace tabuSearch
             solution Xbest = new solution();
             solutionCopier.copy(X, out Xbest);//make a deep copy of X to Xbest
             simpleSwapList=new List<int[]>();
+            poindex = 0;
             int r1, r2, t1, t2;
             int len = X.timeTable.Length * X.timeTable[0].Length;
             for (int i = 0; i < len; i++)
@@ -335,7 +349,8 @@ namespace tabuSearch
 
             solution tempX = new solution();
             solutionCopier.copy(X, out tempX);
-
+            double cost2 = validator.getCost(prblm, Xstar);
+            double cost1=10000000000;
             Random r = new Random();
             //int index = r.Next(simpleSwapList.Count);
             int maxUav = 200;
@@ -344,21 +359,30 @@ namespace tabuSearch
             {
                 if (++poindex < simpleSwapList.Count-1 )
                 {
-                    
+                    int index = r.Next(simpleSwapList.Count);
                     bool re=swap(tempX, simpleSwapList[poindex]);
                     if (!re)
                     {
-                        maxUav--;
+                      //  maxUav--;
                         theta++;
                         if (maxUav == 0)
                             theta = 0;
                     }
                 }
+                 cost1 = validator.getCost(prblm, tempX);
 
+                if (cost1 < cost2) {
+                    return tempX;
+                    theta++; 
+                } else {
+                    if (cost1 > cost2 + 10)
+                    {
+                        solutionCopier.copy(X, out tempX);            
+                    }
+                }
+            
             } while (theta-->0);
-            double cost1=validator.getCost(prblm,tempX);
-            double cost2=validator.getCost(prblm,Xstar);
-            if(cost1<cost2)
+            if (cost1 < cost2)
                 return tempX;
             return Xstar;
 
@@ -691,11 +715,11 @@ namespace tabuSearch
           {
               for (int j = 0; j < effectedCourses.Count; j++)
 			{
-                if (LC[i].CourseID == effectedCourses[j])
+                if (LC.ElementAt(i).Value.CourseID== effectedCourses[j])
                 {
                     apd[i]--;
                     UNAVAILABILITY_CONSTRAINT constraint = new UNAVAILABILITY_CONSTRAINT();
-                    constraint.CourseID = LC[i].CourseID;
+                    constraint.CourseID = LC.ElementAt(i).Value.CourseID;
                     constraint.Day = Tj / p.Periods_per_day;
                     constraint.Day_Period = Tj % p.Periods_per_day;
                     Constraints.Add(constraint); 
@@ -810,7 +834,7 @@ namespace tabuSearch
                 {
                     if (p.courses[i].Students > item.Capacity)
                     {
-                        arm[i]--;
+                       // arm[i]--;
                     }
                 }
             }
@@ -844,6 +868,7 @@ namespace tabuSearch
                     hr1 = apd[i] / Math.Sqrt(nl[i]);
                     if (hr1 < hrmin)
                     {
+                        hrmin = hr1;
                         cids.Clear();
                         cids.Add(i);
                     }
@@ -861,6 +886,7 @@ namespace tabuSearch
                 hr1 = aps[item] / Math.Sqrt(nl[item]);
                 if (hr1 < hrmin)
                 {
+                    hrmin = hr1;
                     cids2.Clear();
                     cids2.Add(item);
                 }
@@ -907,12 +933,14 @@ namespace tabuSearch
             k2 = 0.5;
             int[] pos = new int[2];
             pos[0] = -1;
+            pos[1] = -1;
             List<int> uavtimes=new List<int>();
             uavtimes = getUavPeriods(cindex);
 
             double minCost = double.MaxValue;
             int[] bestPos = new int[2];
-            
+            bestPos[0] = -1;
+            bestPos[1] = -1;
             
             for (int t = 0; t < p.Periods_per_day*p.Days; t++)
             {
