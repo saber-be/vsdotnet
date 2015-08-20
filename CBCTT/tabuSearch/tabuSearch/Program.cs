@@ -77,6 +77,9 @@ namespace tabuSearch
         List<int[]> simpleSwapList;
         List<kempeSwap> kempeSwapTabuList;
 
+
+
+        public int poindex;
         /// <summary>
         /// تابع سازنده کلاس که شروع به حل مساله میکند
         /// </summary>
@@ -117,13 +120,14 @@ namespace tabuSearch
                 OWriter.WriteLine(prblm.courses[ci].CourseID + "    " + prblm.Rooms[pos[1]].ID + " " + pos[0]/prblm.Periods_per_day+" " + pos[0]%prblm.Periods_per_day);
                 Console.WriteLine("ci:"+ci+"    "+pos[0] + "," + pos[1]);
             } while (X0.LC.Count > 0 && pos[0] != -1);//end of part1: initialization
-
+            poindex=0;
             Xstar = new solution();
             solutionCopier.copy(X0, out Xstar);
             solutionCopier.copy(TS(X0, theta), out Xstar);
             
             int loopCount1 = 100;
             int loopCount2 = 100;
+            
             do
             {
                 loopCount1 = 100;
@@ -318,7 +322,7 @@ namespace tabuSearch
                 if (costXstarPrime < costXbest)
                 {
                    // Console.Write("{0} < {1} < {2}\n",validator.getCost( prblm,Xstar), costXstarPrime,costXbest);
-                    solutionCopier.copy( XstarPrime,out Xbest );
+                    solutionCopier.copy( XstarPrime,out Xbest);
                     solutionCopier.copy( XstarPrime,out X);
                 }
             } while (loops-->0);
@@ -334,12 +338,21 @@ namespace tabuSearch
 
             Random r = new Random();
             //int index = r.Next(simpleSwapList.Count);
+            int maxUav = 200;
+            
             do
             {
-                if (simpleSwapList.Count > 0)
+                if (++poindex < simpleSwapList.Count-1 )
                 {
-                    int index = r.Next(simpleSwapList.Count);
-                    swap(tempX, simpleSwapList[index]);
+                    
+                    bool re=swap(tempX, simpleSwapList[poindex]);
+                    if (!re)
+                    {
+                        maxUav--;
+                        theta++;
+                        if (maxUav == 0)
+                            theta = 0;
+                    }
                 }
 
             } while (theta-->0);
@@ -368,6 +381,7 @@ namespace tabuSearch
 
         public solution perturb(solution Xstar, int Eta) 
         {
+            poindex += Eta;
             return Xstar;
         }
 
@@ -385,22 +399,17 @@ namespace tabuSearch
             return true;
         }
 
-        public void swap(solution X, simpleMove m1,simpleMove m2)
-        {
-            course c1 = X.timeTable[m1.t][m1.r];
-            course c2 = X.timeTable[m2.t][m2.r];
-            X.timeTable[m1.t][m1.r]=c2;
-            X.timeTable[m2.t][m2.r]=c1;
-
-            X.setNr(m1.courseId);
-            X.setNr(m2.courseId);
-
-            
-            
-        }
 
 
-        public bool isMoveAv(solution X,string cId,int period) {
+        public bool isMoveAv(solution X,string cId,int period,int room) {
+
+            simpleMove m = new simpleMove();
+            m.courseId = cId;
+            m.r = room;
+            m.t = period;
+            if(simpleSwapTabuList.Contains(m))
+                return false;
+
 
             List<string> relatedCourse = new List<string>();
             foreach (var item in prblm.Curricula)
@@ -428,7 +437,7 @@ namespace tabuSearch
 
             return true;
         }
-        public void swap(solution X,int[] swap)
+        public bool swap(solution X,int[] swap)
         {
 
 
@@ -438,20 +447,22 @@ namespace tabuSearch
 
             if (c1.CourseID != null)//mojaz bodan enteqal ra barasi kon
             {
-                if (!isMoveAv(X, c1.CourseID, swap[2]))
+                if (!isMoveAv(X, c1.CourseID, swap[2],swap[3]))
                 {
                    // Console.WriteLine("{0} can't move to {1}",c1.CourseID,swap[2]);
                     impomov++;
-                    return;
+                    return false;
                 }
+                
+
             }
             if (c2.CourseID != null)//mojaz bodan enteqal ra barasi kon
             {
-                if (!isMoveAv(X, c2.CourseID, swap[0]))
+                if (!isMoveAv(X, c2.CourseID, swap[0],swap[1]))
                 {
                    // Console.WriteLine("{0} can't move to {1}", c2.CourseID, swap[0]);
                     impomov++;
-                    return;
+                    return false;
                 }
             }
             pomov++;
@@ -490,9 +501,7 @@ namespace tabuSearch
             simpleSwapTabuList.Add(m2);
             }
 
-
-
-
+            return true;
         }
         public struct simpleMove
         {
