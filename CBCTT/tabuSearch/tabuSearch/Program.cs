@@ -42,6 +42,8 @@ namespace tabuSearch
         /// جریانی که برای نوشتن خروجی در فایل بکار میرود
         /// </summary>
         StreamWriter OWriter;
+
+        StreamWriter logWriter;
         /// <summary>
         /// An instance of CB-CTT
         /// </summary>
@@ -91,8 +93,10 @@ namespace tabuSearch
             impomov = 0;
             try
             {
+                
                 IReader = new StreamReader(input);
                 OWriter = new StreamWriter(output);
+                logWriter = new StreamWriter("log_" + output);
             }
             catch (Exception e)
             {
@@ -112,38 +116,40 @@ namespace tabuSearch
             simpleSwapTabuList = new List<simpleMove>();
             kempeSwapTabuList = new List<kempeSwap>();
             X0.initSol(prblm);
+            
             int[] pos = new int[2];
             do
             {
-                int ci=X0.HR1();
+                int ci = X0.HR1();
                 pos = X0.HR2(ci);
                 X0.insertLecture(ci, pos[0], pos[1]);
-                OWriter.WriteLine(prblm.courses[ci].CourseID + "    " + prblm.Rooms[pos[1]].ID + " " + pos[0]/prblm.Periods_per_day+" " + pos[0]%prblm.Periods_per_day);
-                Console.WriteLine("ci:"+ci+"    "+pos[0] + "," + pos[1]);
+                //OWriter.WriteLine(prblm.courses[ci].CourseID + "    " + prblm.Rooms[pos[1]].ID + " " + pos[0] / prblm.Periods_per_day + " " + pos[0] % prblm.Periods_per_day);
+                logWriter.WriteLine("ci:" + ci + "    " + prblm.courses[ci].CourseID + "    " + prblm.Rooms[pos[1]].ID + " " + pos[0] / prblm.Periods_per_day + " " + pos[0] % prblm.Periods_per_day);
+                Console.WriteLine("ci:" + ci + "    " + prblm.courses[ci].CourseID + "    " + prblm.Rooms[pos[1]].ID + " " + pos[0] / prblm.Periods_per_day + " " + pos[0] % prblm.Periods_per_day);
             } while (X0.LC.Count > 0 && pos[0] != -1);//end of part1: initialization
-            poindex=0;
+            poindex = 0;
             Xstar = new solution();
             solutionCopier.copy(X0, out Xstar);
             solutionCopier.copy(TS(X0, theta), out Xstar);
-            
+
             int loopCount1 = 10;
             int loopCount2 = 20;
-            int tbcouner=0;
+            int tbcouner = 0;
             do
             {
                 loopCount1 = 10;
-                solutionCopier.copy(perturb(Xstar,Eta),out Xprime);
-                solutionCopier.copy( TS(Xprime, theta),out  XstarPrime);
-                double XstarPrime_Cost=validator.getCost(prblm,XstarPrime);
-                double Xstar_Cost=validator.getCost(prblm, Xstar);
+                solutionCopier.copy(perturb(Xstar, Eta), out Xprime);
+                solutionCopier.copy(TS(Xprime, theta), out  XstarPrime);
+                double XstarPrime_Cost = validator.getCost(prblm, XstarPrime);
+                double Xstar_Cost = validator.getCost(prblm, Xstar);
                 if (XstarPrime_Cost < Xstar_Cost + 2)
                 {
                     do
                     {
-                        theta = (int )(1.6 * theta0);
+                        theta = (int)(1.6 * theta0);
                         solutionCopier.copy(TS(Xprime, theta), out  XstarPrime);
-                        
-                    } while (loopCount1-->0);
+
+                    } while (loopCount1-- > 0);
                 }
                 if (validator.getCost(prblm, XstarPrime) < validator.getCost(prblm, Xstar))
                 {
@@ -158,8 +164,11 @@ namespace tabuSearch
                     Xi++;
                     Eta = Math.Max((int)(EtaMin + landa * Xi), EtaMax);
                 }
-                Console.WriteLine("tabu list count = {0}" ,simpleSwapTabuList.Count);
-                Console.WriteLine("cost = {0}",validator.getCost(prblm, Xstar));
+                Console.WriteLine("tabu list count = {0}", simpleSwapTabuList.Count);
+                Console.WriteLine("cost = {0}", validator.getCost(prblm, Xstar));
+
+                logWriter.WriteLine("tabu list count = {0}", simpleSwapTabuList.Count);
+                logWriter.WriteLine("cost = {0}", validator.getCost(prblm, Xstar));
                 if (tbcouner != 0 && tbcouner == simpleSwapTabuList.Count)
                 {
                     loopCount2 = 0;
@@ -168,13 +177,29 @@ namespace tabuSearch
                 {
                     tbcouner = simpleSwapTabuList.Count;
                 }
-            } while (loopCount2-->0 );
-            
+            } while (loopCount2-- > 0);
+
+
+            for (int t = 0; t < Xstar.timeTable.Length; t++)
+            {
+                for (int r = 0; r < Xstar.timeTable[0].Length; r++)
+                {
+                    course c = Xstar.timeTable[t][r];
+                    if(c.CourseID!=null){
+                        OWriter.WriteLine(c.CourseID + "    " + prblm.Rooms[r].ID + " " + t / prblm.Periods_per_day + " " + t % prblm.Periods_per_day);
+                    }
+                }
+            }
+
+
             OWriter.Close();
             DateTime endRuntime = new DateTime();
             endRuntime = DateTime.Now;
-            Console.WriteLine("{0} possible moves \n{1} impossible move \n",pomov,impomov);
-            Console.WriteLine("run time = {0}",endRuntime-startRuntime);
+            Console.WriteLine("{0} possible moves \n{1} impossible move \n", pomov, impomov);
+            Console.WriteLine("run time = {0}", endRuntime - startRuntime);
+            logWriter.WriteLine("{0} possible moves \n {1} impossible move \n", pomov, impomov);
+            logWriter.WriteLine("run time = {0}", endRuntime - startRuntime);
+            logWriter.Close();
             Console.WriteLine("press any to exit...");
             Console.Read();
 
@@ -274,13 +299,18 @@ namespace tabuSearch
             IReader.Close();//end of file.
             p = tempP;
         }
-
-        public solution TS(solution X,int theta)
+        /// <summary>
+        /// tabu search
+        /// </summary>
+        /// <param name="X">a feasible initial solution</param>
+        /// <param name="theta">θ:the depth of TS</param>
+        /// <returns>X best :best solution found so far</returns>
+        public solution TS(solution X, int theta)
         {
             int loops = theta;
             solution Xbest = new solution();
             solutionCopier.copy(X, out Xbest);//make a deep copy of X to Xbest
-            simpleSwapList=new List<int[]>();
+            simpleSwapList = new List<int[]>();
             poindex = 0;
             int r1, r2, t1, t2;
             int len = X.timeTable.Length * X.timeTable[0].Length;
@@ -288,46 +318,44 @@ namespace tabuSearch
             {
                 for (int j = i + 1; j < len; j++)
                 {
-                    /// <summary>
-                    /// [0]:t1
-                    /// [1]:r1
-                    /// [2]:t2
-                    /// [3]:r2
-                    /// </summary>
-                     int[] simswap = new int[4];
-                        t1 = simswap[0] = i / X.timeTable[0].Length;
-                        r1 = simswap[1] =  i % X.timeTable[0].Length;
-                        t2 = simswap[2] = j / X.timeTable[0].Length;
-                        r2 = simswap[3] =  + j % X.timeTable[0].Length;
-                        string course1 = X.timeTable[t1][r1].CourseID;
-                        string course2 = X.timeTable[t2][r2].CourseID;
-                        simpleMove m1 = new simpleMove();
-                        simpleMove m2 = new simpleMove();
-                    
-                        m1.courseId = course1;
-                        m1.r = r2;
-                        m1.t = t2;
-                        
-                        m2.courseId = course2;
-                        m2.r = r1;
-                        m2.t = t1;
-                    
-                    if( isAvl(X,m1) && isAvl(X,m2) )
+                    // simswap[0]:t1
+                    // simswap[1]:r1
+                    // simswap[2]:t2
+                    // simswap[3]:r2
+                    int[] simswap = new int[4];
+                    t1 = simswap[0] = i / X.timeTable[0].Length;
+                    r1 = simswap[1] = i % X.timeTable[0].Length;
+                    t2 = simswap[2] = j / X.timeTable[0].Length;
+                    r2 = simswap[3] = +j % X.timeTable[0].Length;
+                    string course1 = X.timeTable[t1][r1].CourseID;
+                    string course2 = X.timeTable[t2][r2].CourseID;
+                    simpleMove m1 = new simpleMove();
+                    simpleMove m2 = new simpleMove();
+
+                    m1.courseId = course1;
+                    m1.r = r2;
+                    m1.t = t2;
+
+                    m2.courseId = course2;
+                    m2.r = r1;
+                    m2.t = t1;
+
+                    if (isAvl(X, m1) && isAvl(X, m2))
                     {
                         if (m1.courseId != null || m2.courseId != null)
-                        simpleSwapList.Add(simswap);
-                       // if (m1.courseId != null && m2.courseId != null)
-                            //Console.WriteLine("{0} , {1}",m1.courseId, m2.courseId);
+                            simpleSwapList.Add(simswap);
+                        // if (m1.courseId != null && m2.courseId != null)
+                        //Console.WriteLine("{0} , {1}",m1.courseId, m2.courseId);
                     }
-                    
-                   
+
+
                 }
             }
             do
             {
-                
-                solutionCopier.copy(TSN1(X, theta),out Xstar);
-                solutionCopier.copy(TSN2(Xstar, (int)(theta / 3)),out XstarPrime);
+
+                solutionCopier.copy(TSN1(X, theta), out Xstar);
+                solutionCopier.copy(TSN2(Xstar, (int)(theta / 3)), out XstarPrime);
 
 
                 double costXstarPrime, costXbest;
@@ -335,11 +363,11 @@ namespace tabuSearch
                 costXstarPrime = validator.getCost(prblm, XstarPrime);
                 if (costXstarPrime < costXbest)
                 {
-                   // Console.Write("{0} < {1} < {2}\n",validator.getCost( prblm,Xstar), costXstarPrime,costXbest);
-                    solutionCopier.copy( XstarPrime,out Xbest);
-                    solutionCopier.copy( XstarPrime,out X);
+                    // Console.Write("{0} < {1} < {2}\n",validator.getCost( prblm,Xstar), costXstarPrime,costXbest);
+                    solutionCopier.copy(XstarPrime, out Xbest);
+                    solutionCopier.copy(XstarPrime, out X);
                 }
-            } while (loops-->0);
+            } while (loops-- > 0);
 
             return Xbest;
         }//end of TS
@@ -350,38 +378,42 @@ namespace tabuSearch
             solution tempX = new solution();
             solutionCopier.copy(X, out tempX);
             double cost2 = validator.getCost(prblm, Xstar);
-            double cost1=10000000000;
+            double cost1 = 10000000000;
             Random r = new Random();
             //int index = r.Next(simpleSwapList.Count);
             int maxUav = 200;
-            
+
             do
             {
-                if (++poindex < simpleSwapList.Count-1 )
+                if (++poindex < simpleSwapList.Count - 1)
                 {
                     int index = r.Next(simpleSwapList.Count);
-                    bool re=swap(tempX, simpleSwapList[poindex]);
+                    bool re = swap(tempX, simpleSwapList[poindex]);
                     if (!re)
                     {
-                      //  maxUav--;
+                        //  maxUav--;
                         theta++;
                         if (maxUav == 0)
                             theta = 0;
                     }
                 }
-                 cost1 = validator.getCost(prblm, tempX);
+                cost1 = validator.getCost(prblm, tempX);
 
-                if (cost1 < cost2) {
+                if (cost1 < cost2)
+                {
+                    theta++;
                     return tempX;
-                    theta++; 
-                } else {
+                    
+                }
+                else
+                {
                     if (cost1 > cost2 + 10)
                     {
-                        solutionCopier.copy(X, out tempX);            
+                        solutionCopier.copy(X, out tempX);
                     }
                 }
-            
-            } while (theta-->0);
+
+            } while (theta-- > 0);
             if (cost1 < cost2)
                 return tempX;
             return Xstar;
@@ -397,41 +429,43 @@ namespace tabuSearch
             do
             {
 
-            } while (theta-->0);
+            } while (theta-- > 0);
 
             return tempX;
 
         }
 
-        public solution perturb(solution Xstar, int Eta) 
+        public solution perturb(solution Xstar, int Eta)
         {
             poindex += Eta;
             return Xstar;
         }
 
 
-        public bool isAvl(solution X, simpleMove move){
-            if (move.courseId == null)  return true;
+        public bool isAvl(solution X, simpleMove move)
+        {
+            if (move.courseId == null) return true;
             foreach (var item in X.Constraints)
             {
-                int t=item.Day*prblm.Periods_per_day +item.Day_Period;
-                if(item.CourseID==move.courseId &&  t==move.t) return false;
-                
+                int t = item.Day * prblm.Periods_per_day + item.Day_Period;
+                if (item.CourseID == move.courseId && t == move.t) return false;
+
             }
-            
+
 
             return true;
         }
 
 
 
-        public bool isMoveAv(solution X,string cId,int period,int room) {
+        public bool isMoveAv(solution X, string cId, int period, int room)
+        {
 
             simpleMove m = new simpleMove();
             m.courseId = cId;
             m.r = room;
             m.t = period;
-            if(simpleSwapTabuList.Contains(m))
+            if (simpleSwapTabuList.Contains(m))
                 return false;
 
 
@@ -442,7 +476,7 @@ namespace tabuSearch
                 {
                     foreach (var course in item.Courses)
                     {
-                     if(course!="" && !relatedCourse.Contains(course) )   relatedCourse.Add(course);
+                        if (course != "" && !relatedCourse.Contains(course)) relatedCourse.Add(course);
                     }
                 }
             }
@@ -461,7 +495,7 @@ namespace tabuSearch
 
             return true;
         }
-        public bool swap(solution X,int[] swap)
+        public bool swap(solution X, int[] swap)
         {
 
 
@@ -471,36 +505,36 @@ namespace tabuSearch
 
             if (c1.CourseID != null)//mojaz bodan enteqal ra barasi kon
             {
-                if (!isMoveAv(X, c1.CourseID, swap[2],swap[3]))
+                if (!isMoveAv(X, c1.CourseID, swap[2], swap[3]))
                 {
-                   // Console.WriteLine("{0} can't move to {1}",c1.CourseID,swap[2]);
+                    // Console.WriteLine("{0} can't move to {1}",c1.CourseID,swap[2]);
                     impomov++;
                     return false;
                 }
-                
+
 
             }
             if (c2.CourseID != null)//mojaz bodan enteqal ra barasi kon
             {
-                if (!isMoveAv(X, c2.CourseID, swap[0],swap[1]))
+                if (!isMoveAv(X, c2.CourseID, swap[0], swap[1]))
                 {
-                   // Console.WriteLine("{0} can't move to {1}", c2.CourseID, swap[0]);
+                    // Console.WriteLine("{0} can't move to {1}", c2.CourseID, swap[0]);
                     impomov++;
                     return false;
                 }
             }
             pomov++;
 
-            X.timeTable[swap[0]][swap[1]]=c2;
-            X.timeTable[swap[2]][swap[3]]=c1;
+            X.timeTable[swap[0]][swap[1]] = c2;
+            X.timeTable[swap[2]][swap[3]] = c1;
 
-            int c1Index,c2Index;
+            int c1Index, c2Index;
             c1Index = c2Index = 0;
             for (int i = 0; i < prblm.courses.Length; i++)
-                {
-                    if (prblm.courses[i].CourseID == c1.CourseID) c1Index = i;
-                    if (prblm.courses[i].CourseID == c2.CourseID) c2Index = i;
-                }
+            {
+                if (prblm.courses[i].CourseID == c1.CourseID) c1Index = i;
+                if (prblm.courses[i].CourseID == c2.CourseID) c2Index = i;
+            }
 
             if (c1.CourseID != null)
             {
@@ -511,18 +545,19 @@ namespace tabuSearch
 
 
                 X.setNr(c1.CourseID);
-    
+
                 X.setNd(c1Index);
                 simpleSwapTabuList.Add(m1);
             }
-            if(c2.CourseID!=null){
-            simpleMove m2 = new simpleMove();
-            m2.courseId = c2.CourseID;
-            m2.t = swap[0];
-            m2.r = swap[1];
-            X.setNr(c2.CourseID);
+            if (c2.CourseID != null)
+            {
+                simpleMove m2 = new simpleMove();
+                m2.courseId = c2.CourseID;
+                m2.t = swap[0];
+                m2.r = swap[1];
+                X.setNr(c2.CourseID);
                 X.setNd(c2Index);
-            simpleSwapTabuList.Add(m2);
+                simpleSwapTabuList.Add(m2);
             }
 
             return true;
@@ -531,11 +566,11 @@ namespace tabuSearch
         {
             public int r, t;
             public string courseId;
-           
+
         }
-        struct kempeSwap 
+        struct kempeSwap
         {
-        
+
         }
 
     }//end of class tabuSolver
@@ -654,6 +689,7 @@ namespace tabuSearch
 
         public void insertLecture(int Ci, int Tj, int Rk)
         {
+            if (Tj == -1 || Rk == -1) return;
             this.timeTable[Tj][Rk] = LC[Ci];
             setNr(Ci);
             setApd(Ci,Tj);
@@ -851,123 +887,127 @@ namespace tabuSearch
         {
             initAps();//felan alaki! badan bayad doros beshe
         }
+/// <summary>
+/// درسی که مطابق شرایط هیورستیک 1 در مقاله باشد را پیدا میکند
+/// </summary>
+/// <returns>اندیس درسی که باید زمانبندی شود را برمی گرداند</returns>
+public int HR1()
+{
+    double hr1 = 0;
+    double hrmin = double.MaxValue;
+    List<int> cids = new List<int>();
+    for (int i = 0; i < apd.Length; i++)
+    {
+        if (nl[i] > 0)
+        {
+            hr1 = apd[i] / Math.Sqrt(nl[i]);
+            if (hr1 < hrmin)
+            {
+                hrmin = hr1;
+                cids.Clear();
+                cids.Add(i);
+            }
+            if (hr1 == hrmin)
+            {
+                cids.Add(i);
+            }
+        }
+    }
+    if (cids.Count == 1) return cids.First();//HR1(i)
+    hrmin = double.MaxValue;
+    List<int> cids2 = new List<int>();
+    foreach (int item in cids)
+    {
+        hr1 = aps[item] / Math.Sqrt(nl[item]);
+        if (hr1 < hrmin)
+        {
+            hrmin = hr1;
+            cids2.Clear();
+            cids2.Add(item);
+        }
+        if (hr1 == hrmin)
+        {
+            cids2.Add(item);
+        }
+    }
+    if (cids2.Count == 1) return cids2.First();//HR1(ii)
+
+    cids.Clear();
+    int hrmax = -1;
+    int cindex = cids2.First();
+    foreach (var item in cids2)
+    {
+        string cid = LC[item].CourseID;
+
+        hr1 = 0;
+        foreach (var conf in p.Curricula)
+        {
+            foreach (var memConf in conf.Courses)
+            {
+                if (memConf == cid)
+                {
+                    hr1++;
+                }
+            }
+        }
+
+
+        if (hr1 > hrmax)
+        {
+            hrmax = (int)hr1;
+            cindex = item;
+        }
+
+    }
+    return cindex;//HR1(iii)
+
+}
         /// <summary>
-        /// 
+        /// زمان - مان متانسب با هیورستیک 2 مقاله را پیدا میکند
         /// </summary>
-        /// <param name="p"></param>
-        /// <returns>اندیس درسی که باید زمانبندی شود را برمی گرداند</returns>
-        public int HR1()
+        /// <param name="cindex">اندیس درس انتخاب شده برای انتساب زمان - مکان</param>
+        /// <returns>[0]: period [1]: room </returns>
+public int[] HR2(int cindex)
+{
+    k1 = 1;
+    k2 = 0.5;
+    int[] pos = new int[2];
+    pos[0] = -1;
+    pos[1] = -1;
+    List<int> uavtimes=new List<int>();
+    uavtimes = getUavPeriods(cindex);
+
+    double minCost = double.MaxValue;
+    int[] bestPos = new int[2];
+    bestPos[0] = -1;
+    bestPos[1] = -1;
+    
+    for (int t = 0; t < p.Periods_per_day*p.Days; t++)
+    {
+        if (!uavtimes.Contains(t))
         {
-            double hr1 = 0;
-            double hrmin = double.MaxValue;
-            List<int> cids = new List<int>();
-            for (int i = 0; i < apd.Length; i++)
+            for (int r = 0; r < p.Rooms.Length; r++)
             {
-                if (nl[i] > 0)
+                if(timeTable[t][r].CourseID==null){
+                int[] pr = new int[2];
+                pr[0] = t / p.Days;
+                pr[1] = t % p.Periods_per_day;
+                solution tempSol = new solution();
+                solutionCopier.copy(this, out tempSol);
+                tempSol.insertLecture(cindex, t, r);
+
+                double cost = k1 * uac(cindex, pr) + k2 * validator.getCost(p, tempSol);
+                if (cost < minCost)
                 {
-                    hr1 = apd[i] / Math.Sqrt(nl[i]);
-                    if (hr1 < hrmin)
-                    {
-                        hrmin = hr1;
-                        cids.Clear();
-                        cids.Add(i);
-                    }
-                    if (hr1 == hrmin)
-                    {
-                        cids.Add(i);
-                    }
-                }
+                    minCost = cost;
+                    bestPos[0] = t;
+                    bestPos[1] = r;
+                }}
             }
-            if (cids.Count == 1) return cids.First();//HR1(i)
-            hrmin = double.MaxValue;
-            List<int> cids2 = new List<int>();
-            foreach (int item in cids)
-            {
-                hr1 = aps[item] / Math.Sqrt(nl[item]);
-                if (hr1 < hrmin)
-                {
-                    hrmin = hr1;
-                    cids2.Clear();
-                    cids2.Add(item);
-                }
-                if (hr1 == hrmin)
-                {
-                    cids2.Add(item);
-                }
-            }
-            if (cids2.Count == 1) return cids2.First();//HR1(ii)
-
-            cids.Clear();
-            int hrmax = -1;
-            int cindex = cids2.First();
-            foreach (var item in cids2)
-            {
-                string cid = LC[item].CourseID;
-
-                hr1 = 0;
-                foreach (var conf in p.Curricula)
-                {
-                    foreach (var memConf in conf.Courses)
-                    {
-                        if (memConf == cid)
-                        {
-                            hr1++;
-                        }
-                    }
-                }
-
-
-                if (hr1 > hrmax)
-                {
-                    hrmax = (int)hr1;
-                    cindex = item;
-                }
-
-            }
-            return cindex;//HR1(iii)
-
-        }
-        public int[] HR2(int cindex)
-        {
-            k1 = 1;
-            k2 = 0.5;
-            int[] pos = new int[2];
-            pos[0] = -1;
-            pos[1] = -1;
-            List<int> uavtimes=new List<int>();
-            uavtimes = getUavPeriods(cindex);
-
-            double minCost = double.MaxValue;
-            int[] bestPos = new int[2];
-            bestPos[0] = -1;
-            bestPos[1] = -1;
-            
-            for (int t = 0; t < p.Periods_per_day*p.Days; t++)
-            {
-                if (!uavtimes.Contains(t))
-                {
-                    for (int r = 0; r < p.Rooms.Length; r++)
-                    {
-                        if(timeTable[t][r].CourseID==null){
-                        int[] pr = new int[2];
-                        pr[0] = t / p.Days;
-                        pr[1] = t % p.Periods_per_day;
-                        solution tempSol = new solution();
-                        solutionCopier.copy(this, out tempSol);
-                        tempSol.insertLecture(cindex, t, r);
-
-                        double cost = k1 * uac(cindex, pr) + k2 * validator.getCost(p, tempSol);
-                        if (cost < minCost)
-                        {
-                            minCost = cost;
-                            bestPos[0] = t;
-                            bestPos[1] = r;
-                        }}
-                    }
-                }  
-            }
-            return bestPos;
-        }
+        }  
+    }
+    return bestPos;
+}
 
     }
 

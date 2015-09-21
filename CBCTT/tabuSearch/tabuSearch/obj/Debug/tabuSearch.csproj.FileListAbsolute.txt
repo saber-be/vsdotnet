@@ -4,3 +4,9 @@ c:\users\saber\documents\visual studio 2012\Projects\CBCTT\tabuSearch\tabuSearch
 c:\users\saber\documents\visual studio 2012\Projects\CBCTT\tabuSearch\tabuSearch\obj\Debug\tabuSearch.exe
 c:\users\saber\documents\visual studio 2012\Projects\CBCTT\tabuSearch\tabuSearch\obj\Debug\tabuSearch.pdb
 c:\users\saber\documents\visual studio 2012\Projects\CBCTT\tabuSearch\tabuSearch\obj\Debug\tabuSearch.csprojResolveAssemblyReference.cache
+\\VBOXSVR\github\vsdotnet\CBCTT\tabuSearch\tabuSearch\bin\Debug\tabuSearch.exe.config
+\\VBOXSVR\github\vsdotnet\CBCTT\tabuSearch\tabuSearch\obj\Debug\tabuSearch.exe
+\\VBOXSVR\github\vsdotnet\CBCTT\tabuSearch\tabuSearch\obj\Debug\tabuSearch.pdb
+\\VBOXSVR\github\vsdotnet\CBCTT\tabuSearch\tabuSearch\bin\Debug\tabuSearch.exe
+\\VBOXSVR\github\vsdotnet\CBCTT\tabuSearch\tabuSearch\bin\Debug\tabuSearch.pdb
+\\VBOXSVR\github\vsdotnet\CBCTT\tabuSearch\tabuSearch\obj\Debug\tabuSearch.csprojResolveAssemblyReference.cache
