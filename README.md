@@ -1,5 +1,6 @@
 # vsdotnet
 visual stuadio projects
+
 ارایه خدمات رتبه بندی شرکت ، اخذ گرید شرکت ، ارتقا رتبه شرکت ، ثبت شرکت ، ثبت برند ، اخذ کارت بازرگانی
 <section class="mpcth-page-content">
 <p dir="RTL"><span dir="LTR"><img alt="کلیات ثبت شرکت" class="img-responsive" src="https://sabteyekta.com/uploads/posts/orgin/Hero_Business_Capabilities-Overview-desktop_1.jpg" /></span></p>
@@ -108,60 +109,44 @@ visual stuadio projects
 
 <p dir="RTL">&nbsp;</p>
 
-<div class="col-sm-3">
-	
-<div class="sidebar">
-<div class="sbpanel col-xs-12">
-<div class="title">
-          <h3 class="yellowLine">آخرین مطالب</h3>
-          
-        </div>
-	<div class="content">
-	
-			     <a href="?controller=posts&amp;action=show&amp;id=38">٣١ تیر ماه آخرین فرصت تسلیم اظهارنامه مالیاتی اشخاص حقوقی</a>
-			     <a href="?controller=posts&amp;action=show&amp;id=37">اخذ جواز تاسیس صنایع و سایر انواع مجوز</a>
-			     <a href="?controller=posts&amp;action=show&amp;id=35">راهنمای پرداخت الکترونیک ساجات</a>
-			     <a href="?controller=posts&amp;action=show&amp;id=34">راهنما و فرم متوسط اظهارنامه سه سال اخیر پیمانکاران</a>
-			     <a href="?controller=posts&amp;action=show&amp;id=31">راهنمای پیمانکاران در ساجات</a>
-			     <a href="?controller=posts&amp;action=show&amp;id=28">ساجات</a>
-			     <a href="?controller=posts&amp;action=show&amp;id=29">ثبت نام در ساجات</a>
-			     <a href="?controller=posts&amp;action=show&amp;id=30">راهنمای سامانه ساجات برای مشاوران</a>
-			     <a href="?controller=posts&amp;action=show&amp;id=27">ثبت تغییرات شرکت</a>
-			     <a href="?controller=posts&amp;action=show&amp;id=26">اخذ و تمدید کارت بازرگانی</a>
-			
-	</div>
-</div>
-<div class="sbpanel col-xs-12">
-<div class="title">
-          <h3 class="yellowLine">دسته بندی ها</h3>
-          
-        </div>
-	<div class="content">
-	
-		
-	         <a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=9">ثبت شرکت</a>
-		 <a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=12">رتبه بندی شرکت</a>
-		 <a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=12">اخذ رتبه</a>
-		 <a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=12">اخذ گرید</a>
-		 <a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=36">ثبت برند</a>
-		 <a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=36">ثبت علامت تجاری</a>
-		 <a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=36">ثبت و انتقال برند</a>
-		 <a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=11">خدمات ویژه ثبت</a>
-	
-	</div>
-</div>
-<div class="sbpanel col-xs-12">
-<div class="title">
-          <h3 class="yellowLine">آخرین اخبار و اطلاعیه ها</h3>
-          
-        </div>
-	<div class="content">
-	
-					     <a href="?controller=posts&amp;action=show&amp;id=38">٣١ تیر ماه آخرین فرصت تسلیم اظهارنامه مالیاتی اشخاص حقوقی</a>
-			
-	</div>
-</div>
-</div></div>
+
+
+
+     
+  
+  <ul>
+           <li><a href="https://sabteyekta.com/?controller=posts&action=show&id=38">٣١ تیر ماه آخرین فرصت تسلیم اظهارنامه مالیاتی اشخاص حقوقی</a></li>
+           <li><a href="https://sabteyekta.com/?controller=posts&action=show&id=37">اخذ جواز تاسیس صنایع و سایر انواع مجوز</a></li>
+           <li><a href="https://sabteyekta.com/?controller=posts&action=show&id=35">راهنمای پرداخت الکترونیک ساجات</a></li>
+           <li><a href="https://sabteyekta.com/?controller=posts&action=show&id=34">راهنما و فرم متوسط اظهارنامه سه سال اخیر پیمانکاران</a></li>
+           <li><a href="https://sabteyekta.com/?controller=posts&action=show&id=31">راهنمای پیمانکاران در ساجات</a></li>
+           <li><a href="https://sabteyekta.com/?controller=posts&action=show&id=28">ساجات</a></li>
+           <li><a href="https://sabteyekta.com/?controller=posts&action=show&id=29">ثبت نام در ساجات</a></li>
+           <li><a href="https://sabteyekta.com/?controller=posts&action=show&id=30">راهنمای سامانه ساجات برای مشاوران</a></li>
+           <li><a href="https://sabteyekta.com/?controller=posts&action=show&id=27">ثبت تغییرات شرکت</a></li>
+           <li><a href="https://sabteyekta.com/?controller=posts&action=show&id=26">اخذ و تمدید کارت بازرگانی</a></li>
+      </ul>
+
+    
+  <ul>
+    
+     <li><a href="https://sabteyekta.com/?controller=posts&action=index&cat=9">ثبت شرکت</a></li>
+     <li><a href="https://sabteyekta.com/?controller=posts&action=index&cat=12">رتبه بندی شرکت</a></li>
+     <li><a href="https://sabteyekta.com/?controller=posts&action=index&cat=12">اخذ رتبه</a></li>
+     <li><a href="https://sabteyekta.com/?controller=posts&action=index&cat=12">اخذ گرید</a></li>
+     <li><a href="https://sabteyekta.com/?controller=posts&action=index&cat=36">ثبت برند</a></li>
+     <li><a href="https://sabteyekta.com/?controller=posts&action=index&cat=36">ثبت علامت تجاری</a></li>
+     <li><a href="https://sabteyekta.com/?controller=posts&action=index&cat=36">ثبت و انتقال برند</a></li>
+     <li><a href="https://sabteyekta.com/?controller=posts&action=index&cat=11">خدمات ویژه ثبت</a></li>
+  </ul>
+
+
+         
+        
+  
+  <a href="https://sabteyekta.com/?controller=posts&action=show&id=38">٣١ تیر ماه آخرین فرصت تسلیم اظهارنامه مالیاتی اشخاص حقوقی</a>
+ 
+
 
 
 <h3 dir="RTL"><a id="شرکت های سهامی خاص" name="شرکت های سهامی خاص">ثبت شرکت های سهامی خاص:</a></h3>
