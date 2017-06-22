@@ -117,18 +117,18 @@ visual stuadio projects
           
         </div>
 	<div class="content">
-	<ul>
-			     <li><a href="?controller=posts&amp;action=show&amp;id=38">٣١ تیر ماه آخرین فرصت تسلیم اظهارنامه مالیاتی اشخاص حقوقی</a></li>
-			     <li><a href="?controller=posts&amp;action=show&amp;id=37">اخذ جواز تاسیس صنایع و سایر انواع مجوز</a></li>
-			     <li><a href="?controller=posts&amp;action=show&amp;id=35">راهنمای پرداخت الکترونیک ساجات</a></li>
-			     <li><a href="?controller=posts&amp;action=show&amp;id=34">راهنما و فرم متوسط اظهارنامه سه سال اخیر پیمانکاران</a></li>
-			     <li><a href="?controller=posts&amp;action=show&amp;id=31">راهنمای پیمانکاران در ساجات</a></li>
-			     <li><a href="?controller=posts&amp;action=show&amp;id=28">ساجات</a></li>
-			     <li><a href="?controller=posts&amp;action=show&amp;id=29">ثبت نام در ساجات</a></li>
-			     <li><a href="?controller=posts&amp;action=show&amp;id=30">راهنمای سامانه ساجات برای مشاوران</a></li>
-			     <li><a href="?controller=posts&amp;action=show&amp;id=27">ثبت تغییرات شرکت</a></li>
-			     <li><a href="?controller=posts&amp;action=show&amp;id=26">اخذ و تمدید کارت بازرگانی</a></li>
-			</ul>
+	
+			     <a href="?controller=posts&amp;action=show&amp;id=38">٣١ تیر ماه آخرین فرصت تسلیم اظهارنامه مالیاتی اشخاص حقوقی</a>
+			     <a href="?controller=posts&amp;action=show&amp;id=37">اخذ جواز تاسیس صنایع و سایر انواع مجوز</a>
+			     <a href="?controller=posts&amp;action=show&amp;id=35">راهنمای پرداخت الکترونیک ساجات</a>
+			     <a href="?controller=posts&amp;action=show&amp;id=34">راهنما و فرم متوسط اظهارنامه سه سال اخیر پیمانکاران</a>
+			     <a href="?controller=posts&amp;action=show&amp;id=31">راهنمای پیمانکاران در ساجات</a>
+			     <a href="?controller=posts&amp;action=show&amp;id=28">ساجات</a>
+			     <a href="?controller=posts&amp;action=show&amp;id=29">ثبت نام در ساجات</a>
+			     <a href="?controller=posts&amp;action=show&amp;id=30">راهنمای سامانه ساجات برای مشاوران</a>
+			     <a href="?controller=posts&amp;action=show&amp;id=27">ثبت تغییرات شرکت</a>
+			     <a href="?controller=posts&amp;action=show&amp;id=26">اخذ و تمدید کارت بازرگانی</a>
+			
 	</div>
 </div>
 <div class="sbpanel col-xs-12">
@@ -137,17 +137,17 @@ visual stuadio projects
           
         </div>
 	<div class="content">
-	<ul>
+	
 		
-	     <li><a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=9">ثبت شرکت</a></li>
-		 <li><a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=12">رتبه بندی شرکت</a></li>
-		 <li><a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=12">اخذ رتبه</a></li>
-		 <li><a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=12">اخذ گرید</a></li>
-		 <li><a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=36">ثبت برند</a></li>
-		 <li><a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=36">ثبت علامت تجاری</a></li>
-		 <li><a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=36">ثبت و انتقال برند</a></li>
-		 <li><a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=11">خدمات ویژه ثبت</a></li>
-	</ul>
+	         <a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=9">ثبت شرکت</a>
+		 <a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=12">رتبه بندی شرکت</a>
+		 <a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=12">اخذ رتبه</a>
+		 <a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=12">اخذ گرید</a>
+		 <a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=36">ثبت برند</a>
+		 <a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=36">ثبت علامت تجاری</a>
+		 <a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=36">ثبت و انتقال برند</a>
+		 <a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=11">خدمات ویژه ثبت</a>
+	
 	</div>
 </div>
 <div class="sbpanel col-xs-12">
@@ -156,9 +156,9 @@ visual stuadio projects
           
         </div>
 	<div class="content">
-	<ul>
-					     <li><a href="?controller=posts&amp;action=show&amp;id=38">٣١ تیر ماه آخرین فرصت تسلیم اظهارنامه مالیاتی اشخاص حقوقی</a></li>
-			</ul>
+	
+					     <a href="?controller=posts&amp;action=show&amp;id=38">٣١ تیر ماه آخرین فرصت تسلیم اظهارنامه مالیاتی اشخاص حقوقی</a>
+			
 	</div>
 </div>
 </div></div>
