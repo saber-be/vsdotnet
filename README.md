@@ -108,6 +108,62 @@ visual stuadio projects
 
 <p dir="RTL">&nbsp;</p>
 
+<div class="col-sm-3">
+	
+<div class="sidebar">
+<div class="sbpanel col-xs-12">
+<div class="title">
+          <h3 class="yellowLine">آخرین مطالب</h3>
+          
+        </div>
+	<div class="content">
+	<ul>
+			     <li><a href="?controller=posts&amp;action=show&amp;id=38">٣١ تیر ماه آخرین فرصت تسلیم اظهارنامه مالیاتی اشخاص حقوقی</a></li>
+			     <li><a href="?controller=posts&amp;action=show&amp;id=37">اخذ جواز تاسیس صنایع و سایر انواع مجوز</a></li>
+			     <li><a href="?controller=posts&amp;action=show&amp;id=35">راهنمای پرداخت الکترونیک ساجات</a></li>
+			     <li><a href="?controller=posts&amp;action=show&amp;id=34">راهنما و فرم متوسط اظهارنامه سه سال اخیر پیمانکاران</a></li>
+			     <li><a href="?controller=posts&amp;action=show&amp;id=31">راهنمای پیمانکاران در ساجات</a></li>
+			     <li><a href="?controller=posts&amp;action=show&amp;id=28">ساجات</a></li>
+			     <li><a href="?controller=posts&amp;action=show&amp;id=29">ثبت نام در ساجات</a></li>
+			     <li><a href="?controller=posts&amp;action=show&amp;id=30">راهنمای سامانه ساجات برای مشاوران</a></li>
+			     <li><a href="?controller=posts&amp;action=show&amp;id=27">ثبت تغییرات شرکت</a></li>
+			     <li><a href="?controller=posts&amp;action=show&amp;id=26">اخذ و تمدید کارت بازرگانی</a></li>
+			</ul>
+	</div>
+</div>
+<div class="sbpanel col-xs-12">
+<div class="title">
+          <h3 class="yellowLine">دسته بندی ها</h3>
+          
+        </div>
+	<div class="content">
+	<ul>
+		
+	     <li><a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=9">ثبت شرکت</a></li>
+		 <li><a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=12">رتبه بندی شرکت</a></li>
+		 <li><a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=12">اخذ رتبه</a></li>
+		 <li><a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=12">اخذ گرید</a></li>
+		 <li><a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=36">ثبت برند</a></li>
+		 <li><a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=36">ثبت علامت تجاری</a></li>
+		 <li><a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=36">ثبت و انتقال برند</a></li>
+		 <li><a href="https://sabteyekta.com/?controller=posts&amp;action=index&amp;cat=11">خدمات ویژه ثبت</a></li>
+	</ul>
+	</div>
+</div>
+<div class="sbpanel col-xs-12">
+<div class="title">
+          <h3 class="yellowLine">آخرین اخبار و اطلاعیه ها</h3>
+          
+        </div>
+	<div class="content">
+	<ul>
+					     <li><a href="?controller=posts&amp;action=show&amp;id=38">٣١ تیر ماه آخرین فرصت تسلیم اظهارنامه مالیاتی اشخاص حقوقی</a></li>
+			</ul>
+	</div>
+</div>
+</div></div>
+
+
 <h3 dir="RTL"><a id="شرکت های سهامی خاص" name="شرکت های سهامی خاص">ثبت شرکت های سهامی خاص:</a></h3>
 
 <p dir="RTL">شرکتهای سهامی که تمام سرمایه آنها در موقع تاسیس منحصرا توسط موسسین تامین گردیده است . این گونه شرکت ها ، شرکت سهامی خاص نامیده می شوند (ماده 44 ل.ا.ق.ت) حداقل تعداد سهامداران در شرکت سهامی خاص 3 نفر و حداقل سرمایه در زمان تاسیس 1000000 ریال می باشد و سرمایه شرکت به سهام مساوی تقسیم می گردد ، در خصوص حداقل تعداد اعضاء هیات مدیره مقرراتی وضع نگردیده است . بر طبق نظریه حقوقی شماره 5156 /7 مورخ 13/7/1367 تعداد اعضای هیات هیات مدیره نمی تواند کمتر از 3 نفر باشد .</p>
