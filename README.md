@@ -129,7 +129,6 @@ visual stuadio projects
 
     
   <ul>
-    
      <li><a href="https://sabteyekta.com/?controller=posts&action=index&cat=9">ثبت شرکت</a></li>
      <li><a href="https://sabteyekta.com/?controller=posts&action=index&cat=12">رتبه بندی شرکت</a></li>
      <li><a href="https://sabteyekta.com/?controller=posts&action=index&cat=12">اخذ رتبه</a></li>
