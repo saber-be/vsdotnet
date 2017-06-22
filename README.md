@@ -16,10 +16,8 @@ visual stuadio projects
 <p dir="RTL">&nbsp;</p>
 
 <h2 dir="RTL"><a id="فهرست مطالب" name="فهرست مطالب">فهرست مطالب</a></h2>
-
 <ul>
 	<li dir="rtl"><a href="#معرفی شرکت های مدنی و تجاری">معرفی شرکت های مدنی و تجاری</a>
-
 	<ul style="list-style-type:circle;">
 		<li><a href="#شرکت مدنی">شرکت مدنی</a></li>
 		<li><a href="#شرکت تجاری">شرکت تجاری</a></li>
@@ -113,7 +111,7 @@ visual stuadio projects
 
 
      
-  
+  <h3>آخرین مطالب</h3>
   <ul>
            <li><a href="https://sabteyekta.com/?controller=posts&action=show&id=38">٣١ تیر ماه آخرین فرصت تسلیم اظهارنامه مالیاتی اشخاص حقوقی</a></li>
            <li><a href="https://sabteyekta.com/?controller=posts&action=show&id=37">اخذ جواز تاسیس صنایع و سایر انواع مجوز</a></li>
@@ -127,7 +125,7 @@ visual stuadio projects
            <li><a href="https://sabteyekta.com/?controller=posts&action=show&id=26">اخذ و تمدید کارت بازرگانی</a></li>
       </ul>
 
-    
+  <h3>دسته بندی ها</h3>
   <ul>
      <li><a href="https://sabteyekta.com/?controller=posts&action=index&cat=9">ثبت شرکت</a></li>
      <li><a href="https://sabteyekta.com/?controller=posts&action=index&cat=12">رتبه بندی شرکت</a></li>
@@ -142,7 +140,7 @@ visual stuadio projects
 
          
         
-  
+  <h3>آخرین اطلاعیه ها</h3>
   <a href="https://sabteyekta.com/?controller=posts&action=show&id=38">٣١ تیر ماه آخرین فرصت تسلیم اظهارنامه مالیاتی اشخاص حقوقی</a>
  
 
